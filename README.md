@@ -1,9 +1,9 @@
 # Samarth College ERP System
 
-## Educational ERP System for Samarth Rural Educational Institute
-### SAMARTH COLLEGE OF ENGINEERING & MANAGEMENT, BELHE
+### Educational ERP System for Samarth Rural Educational Institute
+**SAMARTH COLLEGE OF ENGINEERING & MANAGEMENT, BELHE**
 
-A comprehensive full-stack Educational ERP System providing a centralized platform for managing academic, administrative, financial, library, and front-office operations — with role-based access for 8 different user types.
+A state-of-the-art, comprehensive full-stack Educational ERP System providing a centralized platform for managing academic, administrative, financial, library, and front-office operations — with role-based access for 8 different user types and integrated AI/agentic pipelines.
 
 ---
 
@@ -12,35 +12,23 @@ A comprehensive full-stack Educational ERP System providing a centralized platfo
 ### 👥 User Roles (8 Roles)
 | Role | Description |
 |------|-------------|
-| 🛡️ **Super Admin** | Full system control — manage all users, roles, and modules |
-| 👨‍💼 **Admin** | College administration — students, teachers, fees, reports |
-| 👨‍🏫 **Teacher** | Attendance marking, marks entry, notes upload |
-| 🎓 **Student** | View attendance, fees, marks, download study materials |
-| 👨‍👩‍👧 **Parent** | Monitor ward's academic progress and fee status |
-| 💰 **Accountant** | Manage income, expenses, fee collection, financial reports |
-| 📚 **Librarian** | Book management, issue/return tracking, fine calculation |
-| 🏢 **Receptionist** | Front office — visitors, inquiries, calls, complaints |
-
-### 📦 Core Modules
-- 📊 **Dashboards** — Role-specific dashboards with live analytics
-- 📅 **Attendance Management** — Mark and track student attendance
-- 💰 **Fee Management** — Fee structures, payments, receipts
-- 📚 **Marks & Results** — Marks entry, grade calculation, result reports
-- 📝 **Study Materials** — Upload and download notes and assignments
-- 🏆 **Scholarships** — Manage and apply for scholarships
-- 📋 **Leave Applications** — Apply and approve leave requests
-- 🖼️ **College Gallery** — Manage campus images
-- 📚 **Library Management** — Books, issue/return, overdue fines
-- 🏢 **Front Office** — Visitor logs, admission inquiries, call records
-- 💵 **Income & Expense Tracking** — Financial ledger management
-- 🛡️ **User Management** — Create, disable, and manage all system users
+| 🛡️ **Super Admin** | Full system control — manage users, shift assignments, biometric terminal logs, and system configurations. |
+| 👨‍💼 **Admin** | Department administration — students, teachers, parents, class management, fee assignments, and leave approvals. |
+| 👨‍🏫 **Teacher** | Academic logs — traditional class attendance, student marks entry, study notes/syllabus uploads. |
+| 🎓 **Student** | Personal log — track attendance (biometric + manual), fee invoices, academic marks, and download study notes. |
+| 👨‍👩‍👧 **Parent** | Ward monitoring — check child's live attendance percentage, marks/grades, and outstanding fees. |
+| 💰 **Accountant** | Financial ledger — manage college income, expenses, check fee structures, record payments, and view logs. |
+| 📚 **Librarian** | Cataloging — issue and return library books, track book status, and calculate fine logs. |
+| 🏢 **Receptionist** | Front office — log campus visitors, record admission inquiries, follow-up calls, and complaints. |
 
 ### 🤖 AI & Agentic Features (NEW)
-| Feature | Description |
-|---------|-------------|
-| 🤖 **Agentic ERP Chatbot (Sammy)** | Tool-calling LLM agent powered by Groq LLaMA-3.3-70b. Reads live ERP data (attendance, fees, marks, leaves, library) and responds with real numbers |
-| 📊 **AI Insights Dashboard** | Admin/SuperAdmin panel that gathers live ERP data and generates a natural-language health report, anomaly alerts, and actionable recommendations via AI |
-| 💬 **Smart Chat Widget** | Premium glassmorphism floating chat bubble on all dashboards with role-specific quick actions, typing animations, and tool-call indicators |
+- 🤖 **Agentic ERP Chatbot (Sammy):** Multi-turn tool-calling assistant powered by Groq LLaMA-3.3-70b. It dynamically reads live Mongo database parameters (user attendance, pending fees, exam marks, leave status, library loans) and responds with real numbers.
+- 📊 **AI Insights Dashboard:** Admin & SuperAdmin dashboard executing live aggregation on ERP data (monthly attendance, fee collection %, grade distribution, overdue books) combined with LLM analysis to produce a detailed health score, anomaly alerts, and actionable recommendations.
+- 💬 **Smart Chatbot Widget:** Dynamic floating glassmorphism chat bubble appearing on all dashboard panels with role-aware quick-action triggers (e.g., student attendance checks, admin notice checks).
+
+### ⚙️ Hardware & Biometric Integrations
+- 📟 **ESP32 Biometric Terminal:** Integrates with physical fingerprint scanner modules to post live logs of main-gate check-ins and classroom sessions.
+- 📸 **Face Registration:** Built-in face profile registration utilizing client-side TensorFlow/FaceAPI model shards.
 
 ---
 
@@ -49,239 +37,163 @@ A comprehensive full-stack Educational ERP System providing a centralized platfo
 ### Backend
 - **Node.js** with Express.js
 - **MongoDB** with Mongoose ODM
-- **JWT** Authentication
-- **Role-Based Access Control (RBAC)** — centralized `roles.js` config
-- **Multer** for file uploads
-- **PDFKit** for receipt generation
-- **Bcrypt.js** for password hashing
+- **Groq API** utilizing `llama-3.3-70b-versatile` for tool-use agent logic
+- **JWT** Authentication + Role-Based Access Control (RBAC) middleware
+- **Multer** for file and profile uploads
+- **PDFKit** for automated fee receipt generation
 
 ### Frontend
-- **React 18**
-- **React Router v6** — protected, role-based routing
-- **Chart.js / Recharts** for analytics
-- **React Toastify** for notifications
-- **React Icons** for UI icons
-- **Modern CSS** with CSS Variables & dark-mode support
+- **React 18** & **React Router v6** (with Protected Route guard)
+- **Chart.js / Recharts** for dashboard data visualization
+- **Vanilla CSS** with a dark-theme glassmorphism design system
 
 ---
 
 ## 📁 Project Structure
 
 ```
-ERP_system/
+FINAL_YEAR_PROJECT/
 ├── backend/
 │   ├── config/
-│   │   ├── db.js               # MongoDB connection
-│   │   └── roles.js            # RBAC — roles, modules, permissions
+│   │   ├── db.js                 # MongoDB connection
+│   │   └── roles.js              # RBAC config (roles, permissions)
 │   ├── controllers/
 │   │   ├── authController.js
 │   │   ├── adminController.js
-│   │   ├── studentController.js
-│   │   ├── teacherController.js
-│   │   ├── superAdminController.js   # NEW
-│   │   ├── accountantController.js   # NEW
-│   │   ├── libraryController.js      # NEW
-│   │   └── frontOfficeController.js  # NEW
+│   │   ├── chatbotController.js  # Agentic tool-calling loop (Groq API)
+│   │   ├── aiInsightsController.js# live data aggregation & LLM insights
+│   │   ├── attendanceController.js# traditional classroom attendance
+│   │   ├── attendanceController2.js# biometric terminal logs
+│   │   ├── faceController.js     # User face registration
+│   │   ├── feeController.js
+│   │   ├── libraryController.js
+│   │   └── frontOfficeController.js
 │   ├── middleware/
-│   │   ├── auth.js             # protect, authorize, checkPermission
-│   │   ├── errorHandler.js     # asyncHandler, errorHandler
-│   │   └── upload.js           # Multer file upload
+│   │   ├── auth.js               # protect, authorize, and optionalAuth
+│   │   └── errorHandler.js       # Global error handler
 │   ├── models/
-│   │   ├── User.js             # 8 roles supported
+│   │   ├── User.js               # Core schema with roll-based references
 │   │   ├── Student.js
 │   │   ├── Teacher.js
 │   │   ├── Parent.js
-│   │   ├── Book.js             # NEW — Book + BookIssue
-│   │   ├── FrontOffice.js      # NEW
-│   │   ├── Income.js           # NEW
-│   │   ├── Expense.js          # NEW
-│   │   └── ...more
+│   │   ├── Book.js               # Book & BookIssue schemas
+│   │   ├── Attendance.js         # Manual attendance
+│   │   ├── Attendance2.js        # Biometric attendance log
+│   │   ├── Fee.js                # Fee & FeeStructure schemas
+│   │   └── Marks.js
 │   ├── routes/
 │   │   ├── authRoutes.js
-│   │   ├── adminRoutes.js
-│   │   ├── superAdminRoutes.js       # NEW
-│   │   ├── libraryRoutes.js          # NEW
-│   │   ├── frontOfficeRoutes.js      # NEW
-│   │   └── accountantRoutes.js       # NEW
+│   │   ├── chatbotRoutes.js      # /api/chatbot/chat
+│   │   ├── aiInsightsRoutes.js   # /api/ai/insights
+│   │   ├── faceRoutes.js
+│   │   └── ...more
 │   ├── seeders/
-│   │   └── seedData.js         # Seeds all 8 role demo users
-│   ├── uploads/                # Uploaded files
-│   ├── server.js               # Express entry point
-│   └── package.json
+│   │   └── seedData.js           # Database seeder (cleans & inserts all data)
+│   └── server.js                 # App entry point
 │
 ├── frontend/
 │   ├── public/
+│   │   └── models/               # Face recognition model shards
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Layout/
-│   │   │   │   ├── DashboardLayout.js  # Role-based sidebar nav
-│   │   │   │   └── MainLayout.js
-│   │   │   └── ProtectedRoute.js
+│   │   │   ├── ChatbotWidget/    # Chat widget (JS & CSS)
+│   │   │   └── Layout/           # DashboardLayout & MainLayout
 │   │   ├── context/
-│   │   │   └── AuthContext.js          # Auth + dashboard routing
+│   │   │   └── AuthContext.js    # Global session & routing context
 │   │   ├── pages/
-│   │   │   ├── auth/           # Login page (8 role selectors)
-│   │   │   ├── admin/          # Admin panel pages
-│   │   │   ├── teacher/        # Teacher panel pages
-│   │   │   ├── student/        # Student panel pages
-│   │   │   ├── parent/         # Parent panel pages
-│   │   │   ├── superadmin/     # NEW — Super Admin pages
-│   │   │   ├── accountant/     # NEW — Accountant pages
-│   │   │   ├── librarian/      # NEW — Librarian pages
-│   │   │   └── receptionist/   # NEW — Receptionist pages
+│   │   │   ├── admin/
+│   │   │   │   └── AdminAIInsights.js # AI insights dashboard
+│   │   │   ├── student/
+│   │   │   ├── superadmin/
+│   │   │   └── ...other role pages
 │   │   ├── services/
-│   │   │   └── api.js          # All API service functions
-│   │   ├── App.js              # Routes for all 8 role panels
-│   │   └── index.css           # Global styles
-│   └── package.json
+│   │   │   └── api.js            # Axios client instance
+│   │   └── App.js                # Frontend routes configuration
 │
-└── README.md
+└── BIOMETRIC_CODE_WEBSITE_2.ino  # ESP32 micro-controller source code
 ```
 
 ---
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB (local or Atlas)
-- npm or yarn
-
-### 1. Backend Setup
-
+### 1. Backend Configuration
+Navigate to the backend directory and install dependencies:
 ```bash
-# Navigate to backend
 cd backend
-
-# Install dependencies
 npm install
-
-# Configure environment — create a .env file:
 ```
-
+Create a `.env` file inside the `backend` folder:
 ```env
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/ERP_system
+MONGODB_URI=mongodb://localhost:27017/ERP_System
 JWT_SECRET=your_jwt_secret_key
 JWT_EXPIRE=7d
 FRONTEND_URL=http://localhost:3000
+GROQ_API_KEY=your_groq_api_key_here
+```
+> Get a free Groq API key at [console.groq.com](https://console.groq.com)
+
+Seed the database with default clean data (overwrites existing collections for consistency):
+```bash
+node seeders/seedData.js
 ```
 
+Start the development server:
 ```bash
-# Seed the database with all 8 demo users
-node seeders/seedData.js
-
-# Start backend server
 npm run dev
 ```
 
-### 2. Frontend Setup
-
+### 2. Frontend Configuration
+Navigate to the frontend directory and install dependencies:
 ```bash
-# Navigate to frontend
-cd frontend
-
-# Install dependencies
+cd ../frontend
 npm install
-
-# Start development server
+```
+Start the React application:
+```bash
 npm start
 ```
-
-The web app will open at `http://localhost:3000`
+The web app will open automatically at `http://localhost:3000`.
 
 ---
 
 ## 🔐 Demo Login Credentials
 
-> Use these after running the seeder (`node seeders/seedData.js`)
+> These accounts are created during the `node seeders/seedData.js` seeding run:
 
 | Role | Email | Password |
 |------|-------|----------|
-| 🛡️ Super Admin | `superadmin@samarthcollege.edu.in` | `superadmin123` |
-| 👨‍💼 Admin | `admin@samarthcollege.edu.in` | `admin123` |
-| 👨‍🏫 Teacher | `teacher1@samarthcollege.edu.in` | `teacher123` |
-| 🎓 Student | `student1@samarthcollege.edu.in` | `student123` |
-| 👨‍👩‍👧 Parent | `parent1@gmail.com` | `parent123` |
-| 💰 Accountant | `accountant@samarthcollege.edu.in` | `accountant123` |
-| 📚 Librarian | `librarian@samarthcollege.edu.in` | `librarian123` |
-| 🏢 Receptionist | `receptionist@samarthcollege.edu.in` | `receptionist123` |
+| 🛡️ **Super Admin** | `superadmin123@gmail.com` | `superadmin@123` |
+| 👨‍💼 **Admin** | `admin123@gmail.com` | `admin@123` |
+| 👨‍🏫 **Teacher (EE)** | `rajeshpatil123@gmail.com` | `rajeshpatil@123` |
+| 🎓 **Student (EE)** | `amitjadhav123@gmail.com` | `amitjadhav@123` |
+| 🎓 **Student (CO)** | `rahulpatil123@gmail.com` | `rahulpatil@123` |
+| 👨‍👩‍👧 **Parent** | `sureshpatil.parent@gmail.com` | `sureshpatil@123` |
+| 💰 **Accountant** | `accountant@gmail.com` | `accountant@123` |
+| 📚 **Librarian** | `librarian@gmail.com` | `librarian@123` |
+| 🏢 **Receptionist** | `receptionist@gmail.com` | `receptionist@123` |
 
 ---
 
-## 📡 API Endpoints
+## 📡 Key AI API Endpoints
 
-### Authentication
-- `POST /api/auth/register` — Register new user
-- `POST /api/auth/login` — Login user
-- `GET /api/auth/me` — Get current user
-- `PUT /api/auth/profile` — Update profile
+### 🤖 Agentic Chatbot
+- `POST /api/chatbot/chat`
+  - **Access:** Public (anonymous Q&A) or Private (executes live data tools when sent with a valid JWT Authorization header)
+  - **Body:** `{ "message": "string", "conversationHistory": [] }`
 
-### Super Admin
-- `GET /api/super-admin/dashboard` — System-wide analytics
-- `GET /api/super-admin/users` — All users (filterable by role)
-- `POST /api/super-admin/users` — Create user
-- `PUT /api/super-admin/users/:id/role` — Change user role
-- `PUT /api/super-admin/users/:id/status` — Toggle active/inactive
-- `DELETE /api/super-admin/users/:id` — Delete user
-- `GET /api/super-admin/roles` — RBAC config
-
-### Library
-- `GET /api/library/dashboard` — Library stats
-- `GET /api/library/books` — All books
-- `POST /api/library/books` — Add book
-- `PUT /api/library/books/:id` — Update book
-- `DELETE /api/library/books/:id` — Delete book
-- `GET /api/library/issues` — All issue/return records
-- `POST /api/library/issue` — Issue a book
-- `PUT /api/library/return/:id` — Return a book
-
-### Front Office
-- `GET /api/front-office/dashboard` — Front office stats
-- `GET /api/front-office` — All entries (filterable by type)
-- `POST /api/front-office` — Create entry
-- `PUT /api/front-office/:id/checkout` — Check out visitor
-- `DELETE /api/front-office/:id` — Delete entry
-
-### Accountant
-- `GET /api/accountant/dashboard` — Financial dashboard
-- `GET /api/accountant/income` — Income records
-- `POST /api/accountant/income` — Add income
-- `DELETE /api/accountant/income/:id` — Delete income
-- `GET /api/accountant/expenses` — Expense records
-- `POST /api/accountant/expenses` — Add expense
-- `DELETE /api/accountant/expenses/:id` — Delete expense
-
-### Students, Teachers, Attendance, Fees, Marks, Notes...
-> See individual route files in `backend/routes/` for full endpoint list.
-
----
-
-## 🚀 Deployment
-
-### Web Application
-- **Frontend:** Deploy to Vercel, Netlify, or Render
-- **Backend:** Deploy to Render, Railway, or Heroku
-- **Database:** MongoDB Atlas (recommended)
+### 📊 AI Insights Analytics
+- `GET /api/ai/insights`
+  - **Access:** Private (Admin and SuperAdmin only)
+  - **Description:** Returns aggregated ERP analytics combined with structured LLaMA-3.3 analysis.
 
 ---
 
 ## 📄 License
-
 This project is proprietary software for Samarth Rural Educational Institute.
 
 ---
 
 ## 👨‍💻 Developer
-
-Built with ❤️ for **Samarth College of Engineering & Management, Belhe**
-
----
-
-## 🤝 Support
-
-For support, email: `support@samarthcollege.edu.in`
-
----
-
-**⭐ Star this repository if you find it helpful!**
+Built with ❤️ for **Samarth College of Engineering & Management, Belhe**.
