@@ -25,7 +25,8 @@ const NoticesDashboard = () => {
         all: true,
         unread: false,
         urgent: false,
-        today: false
+        today: false,
+        logs: false
     });
 
     // Check if user can create notices
@@ -69,13 +70,14 @@ const NoticesDashboard = () => {
 
     // Handle quick filter change
     const handleQuickFilter = (filterName) => {
-        setQuickFilters(prev => ({
+        setQuickFilters({
             all: false,
             unread: false,
             urgent: false,
             today: false,
+            logs: false,
             [filterName]: true
-        }));
+        });
     };
 
     // Get current filter for notice list
@@ -86,6 +88,7 @@ const NoticesDashboard = () => {
             const today = new Date().toISOString().split('T')[0];
             return { date: today };
         }
+        if (quickFilters.logs) return { status: 'logs' };
         return {};
     };
 
@@ -225,6 +228,12 @@ const NoticesDashboard = () => {
                         onClick={() => handleQuickFilter('today')}
                     >
                         Today ({stats.todayCount})
+                    </button>
+                    <button
+                        className={`filter-btn ${quickFilters.logs ? 'active' : ''}`}
+                        onClick={() => handleQuickFilter('logs')}
+                    >
+                        Notice Logs (History)
                     </button>
                 </div>
             </div>

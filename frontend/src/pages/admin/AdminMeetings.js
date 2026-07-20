@@ -45,8 +45,7 @@ const AdminMeetings = () => {
     const roles = [
         { value: 'student', label: 'Students' },
         { value: 'teacher', label: 'Teachers' },
-        { value: 'parent', label: 'Parents' },
-        { value: 'admin', label: 'Admins' }
+        { value: 'parent', label: 'Parents' }
     ];
 
     useEffect(() => {
@@ -285,25 +284,33 @@ const AdminMeetings = () => {
                                 </div>
                             </div>
 
-                            <div style={{ display: 'flex', gap: 'var(--spacing-2)' }}>
+                            <div style={{ display: 'flex', gap: 'var(--spacing-2)', alignItems: 'center' }}>
                                 <button
                                     className="btn btn-sm btn-secondary"
                                     onClick={() => window.open(meeting.meetingLink, '_blank')}
                                 >
                                     <FiExternalLink /> Link
                                 </button>
-                                <button
-                                    className="btn btn-sm btn-primary"
-                                    onClick={() => openModal(meeting)}
-                                >
-                                    <FiEdit2 /> Edit
-                                </button>
-                                <button
-                                    className="btn btn-sm btn-error"
-                                    onClick={() => handleDelete(meeting._id)}
-                                >
-                                    <FiTrash2 />
-                                </button>
+                                {!['superadmin', 'super_admin'].includes(meeting.createdBy?.role) ? (
+                                    <>
+                                        <button
+                                            className="btn btn-sm btn-primary"
+                                            onClick={() => openModal(meeting)}
+                                        >
+                                            <FiEdit2 /> Edit
+                                        </button>
+                                        <button
+                                            className="btn btn-sm btn-error"
+                                            onClick={() => handleDelete(meeting._id)}
+                                        >
+                                            <FiTrash2 />
+                                        </button>
+                                    </>
+                                ) : (
+                                    <span className="badge badge-secondary" style={{ fontSize: '0.75rem' }}>
+                                        SuperAdmin Meeting
+                                    </span>
+                                )}
                             </div>
                         </div>
                     </div>

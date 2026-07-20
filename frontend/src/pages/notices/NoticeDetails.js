@@ -212,8 +212,10 @@ const NoticeDetails = () => {
                             <FiUser className="meta-icon" />
                             <span>
                                 Published by {notice.creator
-                                    ? `${notice.creator.firstName} ${notice.creator.lastName}`
-                                    : 'Unknown'
+                                    ? `${notice.creator.firstName || ''} ${notice.creator.lastName || ''}`.trim()
+                                    : typeof notice.createdBy === 'object' && notice.createdBy
+                                    ? `${notice.createdBy.firstName || ''} ${notice.createdBy.lastName || ''}`.trim()
+                                    : 'System Admin'
                                 }
                             </span>
                         </div>
@@ -224,9 +226,9 @@ const NoticeDetails = () => {
                         </div>
 
                         {notice.expiryDate && (
-                            <div className="meta-item">
+                            <div className="meta-item" style={{ color: new Date(notice.expiryDate) < new Date() ? '#dc2626' : 'inherit' }}>
                                 <FiClock className="meta-icon" />
-                                <span>Expires on {formatDate(notice.expiryDate)}</span>
+                                <span>{new Date(notice.expiryDate) < new Date() ? 'Expired on' : 'Expires on'} {formatDate(notice.expiryDate)}</span>
                             </div>
                         )}
 
@@ -278,15 +280,22 @@ const NoticeDetails = () => {
                     </div>
                 )}
 
-                {/* Expiry Warning */}
-                {notice.expiryDate && new Date(notice.expiryDate) <= new Date(Date.now() + 24 * 60 * 60 * 1000) && (
+                {/* Expiry Warning / Status Banner */}
+                {notice.expiryDate && new Date(notice.expiryDate) < new Date() ? (
+                    <div className="expiry-warning" style={{ background: '#fee2e2', color: '#dc2626', borderColor: '#fca5a5' }}>
+                        <FiClock className="warning-icon" />
+                        <span>
+                            Notice Expired on {formatDate(notice.expiryDate)} (Archived in Logs)
+                        </span>
+                    </div>
+                ) : notice.expiryDate && new Date(notice.expiryDate) <= new Date(Date.now() + 24 * 60 * 60 * 1000) ? (
                     <div className="expiry-warning">
                         <FiClock className="warning-icon" />
                         <span>
                             This notice will expire on {formatDate(notice.expiryDate)}
                         </span>
                     </div>
-                )}
+                ) : null}
             </div>
         </div>
     );

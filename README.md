@@ -1,199 +1,198 @@
-# Samarth College ERP System
+# 🎓 College Management System (Samarth College ERP)
 
-### Educational ERP System for Samarth Rural Educational Institute
-**SAMARTH COLLEGE OF ENGINEERING & MANAGEMENT, BELHE**
+> **Comprehensive Full-Stack Educational ERP & Campus Management System**
+> **SAMARTH COLLEGE OF ENGINEERING & MANAGEMENT**
 
-A state-of-the-art, comprehensive full-stack Educational ERP System providing a centralized platform for managing academic, administrative, financial, library, and front-office operations — with role-based access for 8 different user types and integrated AI/agentic pipelines.
+A state-of-the-art, enterprise-grade **College Management System** providing a centralized platform to manage academic, administrative, financial, library, and front-office operations with role-based access across **8 distinct user portals**, real-time Paytm & UPI Payment Gateways, automated Gmail email notifications, virtual meetings, biometric attendance, and an integrated AI Chatbot.
 
 ---
 
-## 🌟 Features
+## 🌟 Key Features & Role-Based Portals
 
-### 👥 User Roles (8 Roles)
-| Role | Description |
-|------|-------------|
-| 🛡️ **Super Admin** | Full system control — manage users, shift assignments, biometric terminal logs, and system configurations. |
-| 👨‍💼 **Admin** | Department administration — students, teachers, parents, class management, fee assignments, and leave approvals. |
-| 👨‍🏫 **Teacher** | Academic logs — traditional class attendance, student marks entry, study notes/syllabus uploads. |
-| 🎓 **Student** | Personal log — track attendance (biometric + manual), fee invoices, academic marks, and download study notes. |
-| 👨‍👩‍👧 **Parent** | Ward monitoring — check child's live attendance percentage, marks/grades, and outstanding fees. |
-| 💰 **Accountant** | Financial ledger — manage college income, expenses, check fee structures, record payments, and view logs. |
-| 📚 **Librarian** | Cataloging — issue and return library books, track book status, and calculate fine logs. |
-| 🏢 **Receptionist** | Front office — log campus visitors, record admission inquiries, follow-up calls, and complaints. |
+### 👥 8 Specialized User Portals
+| Portal | Key Capabilities |
+| :--- | :--- |
+| 🛡️ **Super Admin** | Full system control, user creation/editing with automated welcome emails, Notice history/logs, global system settings. |
+| 👨‍💼 **Admin** | Department administration, student/teacher/parent profiles, class & fee management, virtual meeting scheduling. |
+| 👨‍🏫 **Teacher** | Class attendance logging, marks entry, syllabus/study material uploads, virtual meetings participation. |
+| 🎓 **Student** | Live attendance monitoring, online fee payment with dynamic Paytm/UPI QR Code, exam results, timetable & notes. |
+| 👨‍👩‍👧 **Parent** | Ward monitoring, child's live attendance percentage, exam grades, and instant online fee payment portal. |
+| 💰 **Accountant** | Financial ledger, college income & expense management, Paytm Merchant & UPI payment gateway, printable receipts. |
+| 📚 **Librarian** | Cataloging, book issue/return tracking, fine management, and library inventory logs. |
+| 🏢 **Receptionist** | Campus visitor log, admission inquiries, follow-up calls, and complaint tracking. |
 
-### 🤖 AI & Agentic Features (NEW)
-- 🤖 **Agentic ERP Chatbot (Sammy):** Multi-turn tool-calling assistant powered by Groq LLaMA-3.3-70b. It dynamically reads live Mongo database parameters (user attendance, pending fees, exam marks, leave status, library loans) and responds with real numbers.
-- 📊 **AI Insights Dashboard:** Admin & SuperAdmin dashboard executing live aggregation on ERP data (monthly attendance, fee collection %, grade distribution, overdue books) combined with LLM analysis to produce a detailed health score, anomaly alerts, and actionable recommendations.
-- 💬 **Smart Chatbot Widget:** Dynamic floating glassmorphism chat bubble appearing on all dashboard panels with role-aware quick-action triggers (e.g., student attendance checks, admin notice checks).
+---
 
-### ⚙️ Hardware & Biometric Integrations
-- 📟 **ESP32 Biometric Terminal:** Integrates with physical fingerprint scanner modules to post live logs of main-gate check-ins and classroom sessions.
-- 📸 **Face Registration:** Built-in face profile registration utilizing client-side TensorFlow/FaceAPI model shards.
+### 💳 Real-Time Payment Gateway & UPI Integration
+- 📱 **Paytm Merchant Gateway Integration**: Directly connects to Paytm Merchant VPA **`9561563002@ptsbi`** and Paytm Merchant ID.
+- ⚡ **Dynamic Instant UPI QR Code**: Live QR Code generation for custom payment amounts (`upi://pay?pa=9561563002@ptsbi&pn=...&am=...`).
+- 📲 **Mobile App Deep Linking**: One-click direct app launch for Paytm, Google Pay, PhonePe, and BHIM UPI.
+- 💳 **Razorpay & NetBanking Gateway**: Integrated Razorpay Checkout SDK supporting Debit/Credit Cards and all major Indian Banks.
+- 🧾 **Instant Verified Receipts**: Auto-generated transaction invoice numbers (`PAYTM-...` / `RZP-...`) with printable/downloadable official receipts.
+
+---
+
+### ✉️ Automatic Gmail Email Notification Service
+- 🚀 **Welcome Credentials Email**: Automatically dispatches HTML welcome emails containing login credentials, assigned role, and portal URL upon user creation.
+- 🔄 **Account Update Email**: Automatically emails updated account details and password resets to users when profiles are updated by Super Admin.
+- ⚡ **Non-blocking Dispatch**: Async thread-offloaded email delivery ensuring smooth background execution without blocking API endpoints.
+
+---
+
+### 📹 Virtual Meetings & Permission Matrix
+- 🛡️ **Role-Based Meeting Controls**: Meetings created by Super Admin are read-only for lower admin panels (Admin, Teacher, Student).
+- 🎓 **Targeted Meetings Query**: Auto-fetches class-level, department-level, or role-targeted virtual meetings for Teachers, Students, and Parents.
+
+---
+
+### 📢 Notice Management with Expiry & Logs
+- ⏰ **Auto-Expiring Notices**: Notices automatically disappear from active feeds after their configured end time.
+- 📜 **Notice History Logs**: Complete historical log with creator info, start time, and end time.
+
+---
+
+### 🤖 AI Agentic Chatbot (Sammy)
+- 💬 **Multi-turn Assistant**: Powered by LLM for answering student, teacher, and admin queries regarding fees, attendance, timetable, and campus rules.
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Backend
-- **Node.js** with Express.js
-- **MongoDB** with Mongoose ODM
-- **Groq API** utilizing `llama-3.3-70b-versatile` for tool-use agent logic
-- **JWT** Authentication + Role-Based Access Control (RBAC) middleware
-- **Multer** for file and profile uploads
-- **PDFKit** for automated fee receipt generation
+### **Backend (Python FastAPI Framework)**
+- **Python 3.10+** & **FastAPI** (High-performance Async ASGI framework)
+- **MongoDB** & **Motor** (Async MongoDB driver)
+- **Uvicorn** (Lightning-fast ASGI web server)
+- **aiosmtplib & smtplib** (SSL 465 / TLS 587 Gmail SMTP service)
+- **Bcrypt & PyJWT** (Async thread-offloaded password hashing and JWT authentication)
+- **Socket.io** (Real-time WebSocket communication)
 
-### Frontend
-- **React 18** & **React Router v6** (with Protected Route guard)
-- **Chart.js / Recharts** for dashboard data visualization
-- **Vanilla CSS** with a dark-theme glassmorphism design system
+### **Frontend (React Single Page Application)**
+- **React 18** & **React Router v6** (Protected Route Access Control)
+- **qrcode.react** (Dynamic SVG & Canvas UPI QR Code Renderer)
+- **React Icons & Toastify** (Modern notification and UI icons)
+- **Recharts & Chart.js** (Data analytics and financial report charts)
+- **Vanilla CSS** (Dark mode glassmorphism UI design system)
 
 ---
 
-## 📁 Project Structure
+## 📁 Repository Directory Structure
 
 ```
 FINAL_YEAR_PROJECT/
 ├── backend/
-│   ├── config/
-│   │   ├── db.js                 # MongoDB connection
-│   │   └── roles.js              # RBAC config (roles, permissions)
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── adminController.js
-│   │   ├── chatbotController.js  # Agentic tool-calling loop (Groq API)
-│   │   ├── aiInsightsController.js# live data aggregation & LLM insights
-│   │   ├── attendanceController.js# traditional classroom attendance
-│   │   ├── attendanceController2.js# biometric terminal logs
-│   │   ├── faceController.js     # User face registration
-│   │   ├── feeController.js
-│   │   ├── libraryController.js
-│   │   └── frontOfficeController.js
-│   ├── middleware/
-│   │   ├── auth.js               # protect, authorize, and optionalAuth
-│   │   └── errorHandler.js       # Global error handler
-│   ├── models/
-│   │   ├── User.js               # Core schema with roll-based references
-│   │   ├── Student.js
-│   │   ├── Teacher.js
-│   │   ├── Parent.js
-│   │   ├── Book.js               # Book & BookIssue schemas
-│   │   ├── Attendance.js         # Manual attendance
-│   │   ├── Attendance2.js        # Biometric attendance log
-│   │   ├── Fee.js                # Fee & FeeStructure schemas
-│   │   └── Marks.js
-│   ├── routes/
-│   │   ├── authRoutes.js
-│   │   ├── chatbotRoutes.js      # /api/chatbot/chat
-│   │   ├── aiInsightsRoutes.js   # /api/ai/insights
-│   │   ├── faceRoutes.js
-│   │   └── ...more
-│   ├── seeders/
-│   │   └── seedData.js           # Database seeder (cleans & inserts all data)
-│   └── server.js                 # App entry point
-│
+│   ├── app/
+│   │   ├── middleware/        # JWT Authentication & Async Bcrypt verification
+│   │   ├── routers/           # Auth, Academics, Finance, Operations, Profiles, Chatbot
+│   │   ├── utils/             # Email Service (Welcome & Update Emails)
+│   │   ├── config.py          # Environment settings loader
+│   │   ├── database.py        # Async MongoDB Motor connection
+│   │   ├── main.py            # FastAPI main application entry point
+│   │   └── models.py          # Pydantic data schemas
+│   ├── uploads/               # Profile images, notices, and documents
+│   ├── .env.example           # Environment variables template
+│   ├── main.py                # Server launcher script
+│   └── requirements.txt       # Python dependencies
 ├── frontend/
-│   ├── public/
-│   │   └── models/               # Face recognition model shards
+│   ├── public/                # Static assets & index.html
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── ChatbotWidget/    # Chat widget (JS & CSS)
-│   │   │   └── Layout/           # DashboardLayout & MainLayout
-│   │   ├── context/
-│   │   │   └── AuthContext.js    # Global session & routing context
-│   │   ├── pages/
-│   │   │   ├── admin/
-│   │   │   │   └── AdminAIInsights.js # AI insights dashboard
-│   │   │   ├── student/
-│   │   │   ├── superadmin/
-│   │   │   └── ...other role pages
-│   │   ├── services/
-│   │   │   └── api.js            # Axios client instance
-│   │   └── App.js                # Frontend routes configuration
-│
-└── BIOMETRIC_CODE_WEBSITE_2.ino  # ESP32 micro-controller source code
+│   │   ├── components/        # Reusable UI components & Navbar
+│   │   ├── context/           # AuthContext & state management
+│   │   ├── pages/             # Admin, SuperAdmin, Teacher, Student, Parent, Accountant pages
+│   │   │   └── accountant/    # Paytm Payment QR & Income Management
+│   │   ├── services/          # Axios API client
+│   │   └── App.js             # Router & app entry point
+│   └── package.json           # React dependencies & scripts
+├── .gitignore                 # Configured git ignore file
+└── README.md                  # Project documentation
 ```
 
 ---
 
-## 🚀 Getting Started
+## ⚡ Setup & Installation Instructions
 
-### 1. Backend Configuration
-Navigate to the backend directory and install dependencies:
+### 1. Prerequisites
+- **Node.js** (v16.x or higher)
+- **Python** (v3.10 or higher)
+- **MongoDB** (Local instance running on `mongodb://127.0.0.1:27017` or MongoDB Atlas)
+
+---
+
+### 2. Backend Setup (Python FastAPI)
+
 ```bash
+# Navigate to backend folder
 cd backend
-npm install
+
+# Create Python virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On Linux/macOS:
+source venv/bin/activate
+
+# Install required packages
+pip install -r requirements.txt
+
+# Create .env configuration from template
+cp .env.example .env
 ```
-Create a `.env` file inside the `backend` folder:
+
+Edit your `backend/.env` file:
 ```env
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/ERP_System
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRE=7d
-FRONTEND_URL=http://localhost:3000
-GROQ_API_KEY=your_groq_api_key_here
-```
-> Get a free Groq API key at [console.groq.com](https://console.groq.com)
+MONGODB_URI=mongodb://127.0.0.1:27017/ERP_System
 
-Seed the database with default clean data (overwrites existing collections for consistency):
-```bash
-node seeders/seedData.js
-```
+JWT_SECRET=mysupersecretkey123@erp
+JWT_EXPIRE=365d
 
-Start the development server:
-```bash
-npm run dev
+EMAIL_USER=samarthcollege29@gmail.com
+EMAIL_PASS=wxprgbceefjdmumu
+
+COLLEGE_UPI_ID=9561563002@ptsbi
+COLLEGE_NAME=Samarth College of Engineering & Management
+RAZORPAY_KEY_ID=rzp_test_your_key
+PAYTM_MID=SAMARTH_COLLEGE_PAYTM_MID_9561563002
 ```
 
-### 2. Frontend Configuration
-Navigate to the frontend directory and install dependencies:
+Start Python FastAPI backend server:
 ```bash
-cd ../frontend
+python main.py
+```
+*Backend API will run at:* `http://localhost:5000`
+
+---
+
+### 3. Frontend Setup (React.js)
+
+```bash
+# Open a new terminal and navigate to frontend folder
+cd frontend
+
+# Install node dependencies
 npm install
-```
-Start the React application:
-```bash
+
+# Start React development server
 npm start
 ```
-The web app will open automatically at `http://localhost:3000`.
+*Frontend Application will run at:* `http://localhost:3000`
 
 ---
 
-## 🔐 Demo Login Credentials
+## 🔑 Default Credentials for Testing
 
-> These accounts are created during the `node seeders/seedData.js` seeding run:
-
-| Role | Email | Password |
-|------|-------|----------|
+| Role | Email ID | Password |
+| :--- | :--- | :--- |
 | 🛡️ **Super Admin** | `superadmin123@gmail.com` | `superadmin@123` |
 | 👨‍💼 **Admin** | `admin123@gmail.com` | `admin@123` |
-| 👨‍🏫 **Teacher (EE)** | `rajeshpatil123@gmail.com` | `rajeshpatil@123` |
-| 🎓 **Student (EE)** | `amitjadhav123@gmail.com` | `amitjadhav@123` |
-| 🎓 **Student (CO)** | `rahulpatil123@gmail.com` | `rahulpatil@123` |
-| 👨‍👩‍👧 **Parent** | `sureshpatil.parent@gmail.com` | `sureshpatil@123` |
-| 💰 **Accountant** | `accountant@gmail.com` | `accountant@123` |
-| 📚 **Librarian** | `librarian@gmail.com` | `librarian@123` |
-| 🏢 **Receptionist** | `receptionist@gmail.com` | `receptionist@123` |
+| 👨‍🏫 **Teacher** | `ramkadam123@gmail.com` | `teacher@123` |
+| 🎓 **Student** | `rahulpatil123@gmail.com` | `student@123` |
+| 👨‍👩‍👧 **Parent** | `sureshpatilparent123@gmail.com` | `parent@123` |
+| 💰 **Accountant** | `accountant@gmail.com` | `admin@123` |
 
 ---
 
-## 📡 Key AI API Endpoints
-
-### 🤖 Agentic Chatbot
-- `POST /api/chatbot/chat`
-  - **Access:** Public (anonymous Q&A) or Private (executes live data tools when sent with a valid JWT Authorization header)
-  - **Body:** `{ "message": "string", "conversationHistory": [] }`
-
-### 📊 AI Insights Analytics
-- `GET /api/ai/insights`
-  - **Access:** Private (Admin and SuperAdmin only)
-  - **Description:** Returns aggregated ERP analytics combined with structured LLaMA-3.3 analysis.
-
----
-
-## 📄 License
-This project is proprietary software for Samarth Rural Educational Institute.
-
----
-
-## 👨‍💻 Developer
-Built with ❤️ for **Samarth College of Engineering & Management, Belhe**.
+## 📜 License & Copyright
+© 2026 **Samarth College of Engineering & Management**. All rights reserved.
+Developed for Final Year Project & Educational ERP Management.

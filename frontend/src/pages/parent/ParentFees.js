@@ -18,11 +18,14 @@ const ParentFees = () => {
             setWardsData(wards);
             if (wards.length > 0) {
                 setSelectedWard(wards[0]);
+            } else {
+                setLoading(false); // No wards → stop loading
             }
         } catch (error) {
             console.error('Error fetching wards:', error);
             setWardsData([]);
             setSelectedWard(null);
+            setLoading(false);
         }
     }, []);
 
@@ -93,6 +96,27 @@ const ParentFees = () => {
             </div>
         );
     }
+
+    if (!selectedWard) {
+        return (
+            <div className="parent-page animate-fade-in">
+                <div className="page-header">
+                    <div className="header-left">
+                        <Link to="/parent/dashboard" className="back-link">
+                            <FiChevronLeft /> Back to Dashboard
+                        </Link>
+                        <h1>Fee Payment Status</h1>
+                    </div>
+                </div>
+                <div className="empty-state-large">
+                    <FiDollarSign size={48} />
+                    <h2>No Wards Linked</h2>
+                    <p>No students are currently linked to your account. Please contact the administration.</p>
+                </div>
+            </div>
+        );
+    }
+
 
     return (
         <div className="parent-page animate-fade-in">

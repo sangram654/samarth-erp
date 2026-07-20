@@ -254,7 +254,7 @@ const SuperAdminUsers = () => {
                 fetchStudentProfiles(); // reload student profiles
             }
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Failed to create user');
+            toast.error(error.response?.data?.detail || error.response?.data?.message || 'Failed to create user');
         }
     };
 

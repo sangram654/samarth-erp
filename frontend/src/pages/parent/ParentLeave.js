@@ -22,11 +22,14 @@ const ParentLeave = () => {
             setWardsData(wards);
             if (wards.length > 0) {
                 setSelectedWard(wards[0]);
+            } else {
+                setLoading(false); // No wards → stop loading
             }
         } catch (error) {
             console.error('Error fetching wards:', error);
             setWardsData([]);
             setSelectedWard(null);
+            setLoading(false);
         }
     }, []);
 

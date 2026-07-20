@@ -97,9 +97,13 @@ const NoticeCard = ({ notice, onRead, onClick, className = '' }) => {
                     </span>
                 </div>
 
-                <div className="notice-date">
-                    <FiCalendar className="date-icon" />
-                    <span>{formatDate(notice.publishDate)}</span>
+                <div className="notice-date" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', fontSize: '0.8rem' }}>
+                    <div><FiCalendar className="date-icon" /> <strong>Start:</strong> {new Date(notice.publishDate).toLocaleDateString()} {new Date(notice.publishDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                    {notice.expiryDate && (
+                        <div style={{ color: new Date(notice.expiryDate) < new Date() ? '#dc2626' : 'inherit' }}>
+                            <FiClock className="date-icon" /> <strong>End:</strong> {new Date(notice.expiryDate).toLocaleDateString()} {new Date(notice.expiryDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -134,8 +138,10 @@ const NoticeCard = ({ notice, onRead, onClick, className = '' }) => {
                     <FiUser className="creator-icon" />
                     <span>
                         {notice.creator
-                            ? `${notice.creator.firstName} ${notice.creator.lastName}`
-                            : notice.createdBy
+                            ? `${notice.creator.firstName || ''} ${notice.creator.lastName || ''}`.trim()
+                            : typeof notice.createdBy === 'object' && notice.createdBy
+                            ? `${notice.createdBy.firstName || ''} ${notice.createdBy.lastName || ''}`.trim()
+                            : 'Admin'
                         }
                     </span>
                 </div>
@@ -167,13 +173,18 @@ const NoticeCard = ({ notice, onRead, onClick, className = '' }) => {
                 <div className="read-dot"></div>
             </div>
 
-            {/* Expiry warning */}
-            {notice.expiryDate && new Date(notice.expiryDate) <= new Date(Date.now() + 24 * 60 * 60 * 1000) && (
+            {/* Expiry warning / status */}
+            {notice.expiryDate && new Date(notice.expiryDate) < new Date() ? (
+                <div className="expiry-warning" style={{ background: '#fee2e2', color: '#dc2626', borderColor: '#fca5a5' }}>
+                    <FiClock className="expiry-icon" />
+                    <span>Expired</span>
+                </div>
+            ) : notice.expiryDate && new Date(notice.expiryDate) <= new Date(Date.now() + 24 * 60 * 60 * 1000) ? (
                 <div className="expiry-warning">
                     <FiClock className="expiry-icon" />
                     <span>Expires soon</span>
                 </div>
-            )}
+            ) : null}
         </div>
     );
 };

@@ -7,13 +7,13 @@ import '../student/StudentPages.css';
 const AdminFees = () => {
     const [activeTab, setActiveTab] = useState('records'); // 'records' or 'structures'
     const [loading, setLoading] = useState(true);
-    
+
     // Fee records
     const [fees, setFees] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
     const [stats, setStats] = useState({ total: 0, collected: 0, pending: 0 });
-    
+
     // Fee structures
     const [structures, setStructures] = useState([]);
     const [showStructureModal, setShowStructureModal] = useState(false);
@@ -41,6 +41,9 @@ const AdminFees = () => {
         try {
             const res = await api.get('/fees');
             setFees(res.data.data || []);
+            if (res.data.stats) {
+                setStats(res.data.stats);
+            }
         } catch (error) {
             console.error('Error fetching fees:', error);
             toast.error(error.response?.data?.message || 'Failed to load fee records');
@@ -383,10 +386,10 @@ const AdminFees = () => {
                         <div style={{ padding: 'var(--spacing-6)' }}>
                             <div style={{ display: 'grid', gap: 'var(--spacing-4)' }}>
                                 {structures.map((structure) => (
-                                    <div 
-                                        key={structure._id} 
-                                        style={{ 
-                                            border: '1px solid var(--border-color)', 
+                                    <div
+                                        key={structure._id}
+                                        style={{
+                                            border: '1px solid var(--border-color)',
                                             borderRadius: 'var(--radius-md)',
                                             padding: 'var(--spacing-5)',
                                             background: 'var(--bg-secondary)'
@@ -433,8 +436,8 @@ const AdminFees = () => {
                                                 <button className="btn btn-secondary btn-sm" title="Edit" onClick={() => openEditStructureModal(structure)}>
                                                     <FiEdit />
                                                 </button>
-                                                <button 
-                                                    className="btn btn-secondary btn-sm" 
+                                                <button
+                                                    className="btn btn-secondary btn-sm"
                                                     onClick={() => handleDeleteStructure(structure._id)}
                                                     style={{ color: 'var(--error-color)' }}
                                                     title="Delete"

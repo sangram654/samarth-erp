@@ -415,64 +415,75 @@ const TeacherMeetings = () => {
     );
 };
 
-// MeetingCard Component - No change
-const MeetingCard = ({ meeting, onEdit, onDelete, getStatusBadge }) => (
-    <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: 'var(--spacing-4)', background: 'var(--bg-secondary)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: 'var(--spacing-3)' }}>
-            <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{meeting.title}</h3>
-            <span className={`badge badge-${getStatusBadge(meeting.status)}`}>
-                {meeting.status}
-            </span>
-        </div>
-        
-        {meeting.description && (
-            <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--spacing-3)', fontSize: '0.9rem' }}>
-                {meeting.description}
-            </p>
-        )}
+const MeetingCard = ({ meeting, onEdit, onDelete, getStatusBadge }) => {
+    const isHigherAdminMeeting = ['superadmin', 'super_admin', 'admin'].includes(meeting.createdBy?.role);
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)', marginBottom: 'var(--spacing-4)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem' }}>
-                <FiCalendar size={16} />
-                <span>{new Date(meeting.scheduledDate).toLocaleDateString()}</span>
-                <FiClock size={16} style={{ marginLeft: '12px' }} />
-                <span>{meeting.scheduledTime} ({meeting.duration} min)</span>
+    return (
+        <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: 'var(--spacing-4)', background: 'var(--bg-secondary)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: 'var(--spacing-3)' }}>
+                <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{meeting.title}</h3>
+                <span className={`badge badge-${getStatusBadge(meeting.status)}`}>
+                    {meeting.status}
+                </span>
             </div>
             
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem' }}>
-                <FiVideo size={16} />
-                <span>{meeting.platform}</span>
+            {meeting.description && (
+                <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--spacing-3)', fontSize: '0.9rem' }}>
+                    {meeting.description}
+                </p>
+            )}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)', marginBottom: 'var(--spacing-4)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem' }}>
+                    <FiCalendar size={16} />
+                    <span>{new Date(meeting.scheduledDate).toLocaleDateString()}</span>
+                    <FiClock size={16} style={{ marginLeft: '12px' }} />
+                    <span>{meeting.scheduledTime} ({meeting.duration} min)</span>
+                </div>
+                
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem' }}>
+                    <FiVideo size={16} />
+                    <span>{meeting.platform}</span>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem' }}>
+                    <FiUsers size={16} />
+                    <span>{meeting.totalAttended || 0}/{meeting.totalTargeted || 0} attended</span>
+                </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem' }}>
-                <FiUsers size={16} />
-                <span>{meeting.totalAttended || 0}/{meeting.totalTargeted || 0} attended</span>
+            <div style={{ display: 'flex', gap: 'var(--spacing-2)', alignItems: 'center' }}>
+                <button
+                    className="btn btn-sm btn-secondary"
+                    onClick={() => window.open(meeting.meetingLink, '_blank')}
+                >
+                    <FiExternalLink /> Link
+                </button>
+                {!isHigherAdminMeeting ? (
+                    <>
+                        <button
+                            className="btn btn-sm btn-primary"
+                            onClick={() => onEdit(meeting)}
+                            disabled={meeting.status === 'Completed' || meeting.status === 'Cancelled'}
+                        >
+                            <FiEdit2 /> Edit
+                        </button>
+                        <button
+                            className="btn btn-sm btn-error"
+                            onClick={() => onDelete(meeting._id)}
+                            disabled={meeting.status === 'Completed' || meeting.status === 'Cancelled'}
+                        >
+                            <FiTrash2 />
+                        </button>
+                    </>
+                ) : (
+                    <span className="badge badge-secondary" style={{ fontSize: '0.75rem' }}>
+                        Created by {['superadmin', 'super_admin'].includes(meeting.createdBy?.role) ? 'SuperAdmin' : 'Admin'}
+                    </span>
+                )}
             </div>
         </div>
-
-        <div style={{ display: 'flex', gap: 'var(--spacing-2)' }}>
-            <button
-                className="btn btn-sm btn-secondary"
-                onClick={() => window.open(meeting.meetingLink, '_blank')}
-            >
-                <FiExternalLink /> Link
-            </button>
-            <button
-                className="btn btn-sm btn-primary"
-                onClick={() => onEdit(meeting)}
-                disabled={meeting.status === 'Completed' || meeting.status === 'Cancelled'}
-            >
-                <FiEdit2 /> Edit
-            </button>
-            <button
-                className="btn btn-sm btn-error"
-                onClick={() => onDelete(meeting._id)}
-                disabled={meeting.status === 'Completed' || meeting.status === 'Cancelled'}
-            >
-                <FiTrash2 />
-            </button>
-        </div>
-    </div>
-);
+    );
+};
 
 export default TeacherMeetings;

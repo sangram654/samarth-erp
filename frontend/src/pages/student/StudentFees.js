@@ -3,6 +3,7 @@ import { FiDollarSign, FiCreditCard, FiDownload, FiCalendar, FiX } from 'react-i
 import { toast } from 'react-toastify';
 import { useAuth } from '../../context/AuthContext';
 import { feeService } from '../../services/api';
+import { QRCodeSVG } from 'qrcode.react';
 import './StudentPages.css';
 
 const StudentFees = () => {
@@ -290,6 +291,43 @@ const StudentFees = () => {
                                     <option value="cheque">Cheque</option>
                                 </select>
                             </div>
+
+                            {/* UPI QR Display if payment method is UPI or Online */}
+                            {(paymentMethod === 'upi' || paymentMethod === 'online') && (
+                                <div style={{ textAlign: 'center', background: '#f8fafc', padding: '16px', borderRadius: '10px', border: '1px solid #cbd5e1', marginBottom: '1.5rem' }}>
+                                    <h4 style={{ margin: '0 0 10px 0', color: '#0f172a', fontSize: '0.95rem' }}>
+                                        Instant Paytm & UPI Payment Gateway
+                                    </h4>
+                                    <div style={{ background: '#ffffff', padding: '10px', display: 'inline-block', borderRadius: '12px', border: '2px solid #00baf2' }}>
+                                        <QRCodeSVG
+                                            value={`upi://pay?pa=9561563002@ptsbi&pn=${encodeURIComponent('Samarth College of Engineering')}&am=${paymentAmount || selectedFee.dueAmount}&cu=INR&tn=${encodeURIComponent(selectedFee.name || 'Fee Payment')}`}
+                                            size={160}
+                                            level="H"
+                                            includeMargin={true}
+                                        />
+                                    </div>
+                                    <p style={{ margin: '8px 0 2px 0', fontWeight: '700', fontSize: '0.9rem', color: '#0369a1' }}>
+                                        Paytm Merchant UPI: 9561563002@ptsbi
+                                    </p>
+                                    <p style={{ margin: '0 0 10px 0', fontSize: '0.8rem', color: '#64748b' }}>
+                                        Scan QR or click below to launch UPI app directly:
+                                    </p>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center' }}>
+                                        <a href={`paytmmp://pay?pa=9561563002@ptsbi&pn=${encodeURIComponent('Samarth College')}&am=${paymentAmount || selectedFee.dueAmount}&cu=INR`} className="btn btn-sm" style={{ background: '#00baf2', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: '700', padding: '6px 12px', fontSize: '0.8rem' }}>
+                                            Paytm
+                                        </a>
+                                        <a href={`phonepe://pay?pa=9561563002@ptsbi&pn=${encodeURIComponent('Samarth College')}&am=${paymentAmount || selectedFee.dueAmount}&cu=INR`} className="btn btn-sm" style={{ background: '#5f259f', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: '700', padding: '6px 12px', fontSize: '0.8rem' }}>
+                                            PhonePe
+                                        </a>
+                                        <a href={`gpay://upi/pay?pa=9561563002@ptsbi&pn=${encodeURIComponent('Samarth College')}&am=${paymentAmount || selectedFee.dueAmount}&cu=INR`} className="btn btn-sm" style={{ background: '#4285F4', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: '700', padding: '6px 12px', fontSize: '0.8rem' }}>
+                                            Google Pay
+                                        </a>
+                                        <a href={`upi://pay?pa=9561563002@ptsbi&pn=${encodeURIComponent('Samarth College')}&am=${paymentAmount || selectedFee.dueAmount}&cu=INR`} className="btn btn-sm" style={{ background: '#1e3a8a', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: '700', padding: '6px 12px', fontSize: '0.8rem' }}>
+                                            BHIM UPI
+                                        </a>
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Action Buttons */}
                             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>

@@ -74,6 +74,11 @@ const NoticeList = ({
                 ...activeFilters
             };
 
+            if (params.unread === 'logs') {
+                params.status = 'logs';
+                delete params.unread;
+            }
+
             // Remove empty filters
             Object.keys(params).forEach(key => {
                 if (params[key] === '' || params[key] === null || params[key] === undefined) {
@@ -251,9 +256,10 @@ const NoticeList = ({
                                 onChange={(e) => handleFilterChange('unread', e.target.value)}
                                 className="filter-select"
                             >
-                                <option value="">All Notices</option>
+                                <option value="">Active Notices</option>
                                 <option value="true">Unread Only</option>
                                 <option value="false">Read Only</option>
+                                <option value="logs">Notice Logs (Expired/History)</option>
                             </select>
                         </div>
 

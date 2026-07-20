@@ -41,6 +41,9 @@ const SuperAdminFees = () => {
         try {
             const res = await api.get('/fees');
             setFees(res.data.data || []);
+            if (res.data.stats) {
+                setStats(res.data.stats);
+            }
         } catch (error) {
             console.error('Error fetching fees:', error);
             toast.error(error.response?.data?.message || 'Failed to load fee records');
