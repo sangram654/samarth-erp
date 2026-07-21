@@ -249,12 +249,27 @@ if frontend_build_path:
     @app.get("/{catchall:path}")
     async def serve_frontend(catchall: str):
         # Ignore API and socket routes
-        if catchall.startswith("api") or catchall.startswith("socket.io"):
+        if catchall.startswith("api") or catchall.startswith("socket.io") or catchall.startswith("uploads"):
             raise fastapi.HTTPException(status_code=404, detail="Not Found")
             
         file_path = os.path.join(frontend_build_path, catchall)
         if catchall and os.path.isfile(file_path):
             return FileResponse(file_path)
+        
+        # Handle JS/CSS bundle hash mismatch: if browser requests old hash, serve the actual bundle
+        if catchall.startswith("static/js/main.") and catchall.endswith(".js"):
+            js_dir = os.path.join(frontend_build_path, "static", "js")
+            if os.path.exists(js_dir):
+                js_files = [f for f in os.listdir(js_dir) if f.startswith("main.") and f.endswith(".js") and not f.endswith(".map") and not f.endswith(".txt")]
+                if js_files:
+                    return FileResponse(os.path.join(js_dir, js_files[0]), media_type="application/javascript")
+        
+        if catchall.startswith("static/css/main.") and catchall.endswith(".css"):
+            css_dir = os.path.join(frontend_build_path, "static", "css")
+            if os.path.exists(css_dir):
+                css_files = [f for f in os.listdir(css_dir) if f.startswith("main.") and f.endswith(".css") and not f.endswith(".map")]
+                if css_files:
+                    return FileResponse(os.path.join(css_dir, css_files[0]), media_type="text/css")
             
         index_file = os.path.join(frontend_build_path, "index.html")
         if os.path.exists(index_file):
