@@ -27,6 +27,15 @@ socket_app = socketio.ASGIApp(sio)
 
 app = fastapi.FastAPI(title="🎓 SAMARTH COLLEGE ERP SYSTEM")
 
+# Enable CORS for all origins, headers, and HTTP methods
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get("/api/db-status")
 async def db_status():
     try:

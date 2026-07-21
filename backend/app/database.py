@@ -1,10 +1,19 @@
 # pyrefly: ignore [missing-import]
+import certifi
 from motor.motor_asyncio import AsyncIOMotorClient
 from .config import settings
 
-# Initialize Async MongoDB client safely
+# Initialize Async MongoDB client safely with SSL certifi support
 try:
-    client = AsyncIOMotorClient(settings.MONGODB_URI, serverSelectionTimeoutMS=5000)
+    if "mongodb+srv://" in settings.MONGODB_URI:
+        client = AsyncIOMotorClient(
+            settings.MONGODB_URI,
+            tlsCAFile=certifi.where(),
+            serverSelectionTimeoutMS=10000
+        )
+    else:
+        client = AsyncIOMotorClient(settings.MONGODB_URI, serverSelectionTimeoutMS=5000)
+
     raw_name = settings.MONGODB_URI.split("/")[-1].split("?")[0]
     db_name = raw_name if raw_name else "ERP_System"
     db = client[db_name]
