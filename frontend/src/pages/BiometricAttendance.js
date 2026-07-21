@@ -11,7 +11,7 @@ import { useAuth } from '../context/AuthContext';
 import './student/StudentPages.css';
 
 // Socket connection setup
-const socketUrl = (process.env.REACT_APP_API_URL || `http://${window.location.hostname}:5000`).replace('/api', '');
+const socketUrl = (process.env.REACT_APP_API_URL || window.location.origin).replace('/api', '');
 const socket = io(socketUrl);
 
 const BiometricAttendance = () => {

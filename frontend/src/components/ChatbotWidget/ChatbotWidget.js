@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './ChatbotWidget.css';
 
-const API_BASE = process.env.REACT_APP_API_URL || `http://${window.location.hostname}:5000/api`;
+const API_BASE = process.env.REACT_APP_API_URL || `${window.location.origin}/api`;
 
 const QUICK_ACTIONS = {
     student: [

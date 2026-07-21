@@ -7,7 +7,7 @@ import { useAuth } from '../../context/AuthContext';
 import '../student/StudentPages.css';
 
 // Socket connection
-const socket = io(process.env.REACT_APP_API_URL || `http://${window.location.hostname}:5000`);
+const socket = io(process.env.REACT_APP_API_URL || window.location.origin);
 
 const BiometricTerminal = () => {
     const { user } = useAuth();
