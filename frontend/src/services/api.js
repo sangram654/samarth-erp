@@ -30,8 +30,17 @@ api.interceptors.response.use(
         if (error.response?.status === 401) {
             // Token expired or invalid
             localStorage.removeItem('token');
-            // Redirect to login if not already there
-            if (window.location.pathname !== '/login') {
+            
+            // Only redirect to login if user is trying to access a protected portal path
+            const protectedPortals = [
+                '/super-admin', '/admin', '/teacher', '/student', 
+                '/parent', '/accountant', '/librarian', '/receptionist'
+            ];
+            const isProtectedPath = protectedPortals.some(portal => 
+                window.location.pathname.startsWith(portal)
+            );
+            
+            if (isProtectedPath && window.location.pathname !== '/login') {
                 window.location.href = '/login';
             }
         }
