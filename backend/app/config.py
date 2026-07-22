@@ -4,6 +4,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     EMAIL_USER: str = os.getenv("EMAIL_USER", "samarthcollege29@gmail.com")
     EMAIL_PASS: str = os.getenv("EMAIL_PASS", "wxpr gbce efjd mumu")
+    RESEND_API_KEY: str = os.getenv("RESEND_API_KEY", "")
     JWT_SECRET: str = os.getenv("JWT_SECRET", "mysupersecretkey123@erp")
     JWT_EXPIRE: str = os.getenv("JWT_EXPIRE", "365d")
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")

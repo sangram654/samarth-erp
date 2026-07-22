@@ -5,22 +5,16 @@ from typing import Optional, Dict, Any
 # pyrefly: ignore [missing-import]
 import aiosmtplib
 from ..config import settings
+import requests
+import os
 
 def send_email_sync(to_email: str, recipient_name: str, role: str, password: str) -> bool:
     """
-    Synchronous helper to send welcome email via Gmail SMTP with SSL/TLS fallback.
+    Synchronous helper to send welcome email via Gmail SMTP or Resend API fallback.
     """
+    resend_key = settings.RESEND_API_KEY.strip() if settings.RESEND_API_KEY else ""
     email_user = settings.EMAIL_USER.strip() if settings.EMAIL_USER else ""
     email_pass = settings.EMAIL_PASS.replace(" ", "").strip() if settings.EMAIL_PASS else ""
-
-    if not email_user or not email_pass:
-        print("[EMAIL SERVICE] Warning: EMAIL_USER or EMAIL_PASS not configured in .env file.")
-        return False
-
-    msg = EmailMessage()
-    msg["From"] = f"Samarth College ERP <{email_user}>"
-    msg["To"] = to_email
-    msg["Subject"] = "Welcome to Samarth College ERP System - Your Account Login Credentials"
 
     formatted_role = role.replace("_", " ").title()
 
@@ -55,7 +49,7 @@ def send_email_sync(to_email: str, recipient_name: str, role: str, password: str
                 <p class="welcome-text">Dear <strong>{recipient_name}</strong>,</p>
                 <p>Welcome to <strong>Samarth College ERP Portal</strong>! Your user account has been successfully created as <strong>{formatted_role}</strong>.</p>
                 <p>These are your account login credentials to access the ERP portal:</p>
-
+ 
                 <div class="credentials-box">
                     <div class="cred-item">
                         <span class="cred-label">Portal URL:</span>
@@ -74,11 +68,11 @@ def send_email_sync(to_email: str, recipient_name: str, role: str, password: str
                         <span class="cred-value">{formatted_role}</span>
                     </div>
                 </div>
-
+ 
                 <div class="cta-container">
                     <a href="http://localhost:3000" class="btn-login" target="_blank">Log In to ERP Portal</a>
                 </div>
-
+ 
                 <p style="font-size: 13px; color: #64748b; margin-top: 25px;">
                     <em>Note: For security reasons, we strongly recommend changing your password after your initial login.</em>
                 </p>
@@ -92,6 +86,39 @@ def send_email_sync(to_email: str, recipient_name: str, role: str, password: str
     </html>
     """
 
+    # Resend API integration (fast and non-blocked HTTP call)
+    if resend_key:
+        try:
+            url = "https://api.resend.com/emails"
+            headers = {
+                "Authorization": f"Bearer {resend_key}",
+                "Content-Type": "application/json"
+            }
+            from_email = os.getenv("RESEND_FROM_EMAIL", "onboarding@resend.dev").strip()
+            payload = {
+                "from": f"Samarth College ERP <{from_email}>",
+                "to": to_email,
+                "subject": "Welcome to Samarth College ERP System - Your Account Login Credentials",
+                "html": html_content
+            }
+            res = requests.post(url, json=payload, headers=headers, timeout=10)
+            if res.status_code in [200, 201]:
+                print(f"[EMAIL SERVICE] Welcome email successfully sent via Resend API to {to_email}")
+                return True
+            else:
+                print(f"[EMAIL SERVICE] Resend API failed with status {res.status_code}: {res.text}, falling back to Gmail SMTP...")
+        except Exception as e_resend:
+            print(f"[EMAIL SERVICE] Resend API exception: {e_resend}, falling back to Gmail SMTP...")
+
+    if not email_user or not email_pass:
+        print("[EMAIL SERVICE] Warning: EMAIL_USER or EMAIL_PASS not configured in .env file.")
+        return False
+
+    msg = EmailMessage()
+    msg["From"] = f"Samarth College ERP <{email_user}>"
+    msg["To"] = to_email
+    msg["Subject"] = "Welcome to Samarth College ERP System - Your Account Login Credentials"
+
     msg.set_content(
         f"Hello {recipient_name},\n\n"
         f"Welcome to Samarth College ERP Portal!\n"
@@ -102,7 +129,7 @@ def send_email_sync(to_email: str, recipient_name: str, role: str, password: str
         f"Please log in and update your password."
     )
     msg.add_alternative(html_content, subtype="html")
-
+ 
     try:
         with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=12) as server:
             server.login(email_user, email_pass)
@@ -124,19 +151,11 @@ def send_email_sync(to_email: str, recipient_name: str, role: str, password: str
 
 def send_update_email_sync(to_email: str, recipient_name: str, role: str, password: Optional[str] = None, extra_details: Optional[dict] = None) -> bool:
     """
-    Synchronous helper to send account update notification email via Gmail SMTP with structure matching Create User HTML.
+    Synchronous helper to send welcome email via Gmail SMTP or Resend API fallback.
     """
+    resend_key = settings.RESEND_API_KEY.strip() if settings.RESEND_API_KEY else ""
     email_user = settings.EMAIL_USER.strip() if settings.EMAIL_USER else ""
     email_pass = settings.EMAIL_PASS.replace(" ", "").strip() if settings.EMAIL_PASS else ""
-
-    if not email_user or not email_pass:
-        print("[EMAIL SERVICE] Warning: EMAIL_USER or EMAIL_PASS not configured in .env file.")
-        return False
-
-    msg = EmailMessage()
-    msg["From"] = f"Samarth College ERP <{email_user}>"
-    msg["To"] = to_email
-    msg["Subject"] = "Samarth College ERP - Your Account Details Have Been Updated"
 
     formatted_role = role.replace("_", " ").title()
 
@@ -229,6 +248,39 @@ def send_update_email_sync(to_email: str, recipient_name: str, role: str, passwo
     </body>
     </html>
     """
+
+    # Resend API integration (fast and non-blocked HTTP call)
+    if resend_key:
+        try:
+            url = "https://api.resend.com/emails"
+            headers = {
+                "Authorization": f"Bearer {resend_key}",
+                "Content-Type": "application/json"
+            }
+            from_email = os.getenv("RESEND_FROM_EMAIL", "onboarding@resend.dev").strip()
+            payload = {
+                "from": f"Samarth College ERP <{from_email}>",
+                "to": to_email,
+                "subject": "Samarth College ERP - Your Account Details Have Been Updated",
+                "html": html_content
+            }
+            res = requests.post(url, json=payload, headers=headers, timeout=10)
+            if res.status_code in [200, 201]:
+                print(f"[EMAIL SERVICE] Account update email successfully sent via Resend API to {to_email}")
+                return True
+            else:
+                print(f"[EMAIL SERVICE] Resend API failed with status {res.status_code}: {res.text}, falling back to Gmail SMTP...")
+        except Exception as e_resend:
+            print(f"[EMAIL SERVICE] Resend API exception: {e_resend}, falling back to Gmail SMTP...")
+
+    if not email_user or not email_pass:
+        print("[EMAIL SERVICE] Warning: EMAIL_USER or EMAIL_PASS not configured in .env file.")
+        return False
+
+    msg = EmailMessage()
+    msg["From"] = f"Samarth College ERP <{email_user}>"
+    msg["To"] = to_email
+    msg["Subject"] = "Samarth College ERP - Your Account Details Have Been Updated"
 
     msg.set_content(
         f"Hello {recipient_name},\n\n"
